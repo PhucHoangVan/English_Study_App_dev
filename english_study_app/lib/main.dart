@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import './LoginScreen.dart';
-import './SignUpScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,6 +12,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'English App',
+      // initialRoute: '/',
+      // routes: {
+      //   '/login': (context) => LoginScreen(),
+      //   '/signup': (context) => SignUpScreen(),
+      // },
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
