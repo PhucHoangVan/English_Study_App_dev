@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:english_study_app/LoginScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -10,6 +14,10 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreen extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
+    //Create the textfield controller
+    TextEditingController _emailController = TextEditingController();
+    TextEditingController _passwordController = TextEditingController();
+    TextEditingController _repasswordController = TextEditingController();
     // ignore: avoid_unnecessary_containers
     return Scaffold(
       body: Container(
@@ -39,35 +47,38 @@ class _SignUpScreen extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 0),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
                     child: TextField(
+                      controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           hintText: "User Email",
                           prefixIcon: Icon(Icons.mail,
                               color: Color.fromARGB(255, 2, 67, 119))),
                     ),
                   ),
                   const SizedBox(height: 0),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
                     child: TextField(
+                      controller: _passwordController,
                       obscureText: true,
                       keyboardType: TextInputType.visiblePassword,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           hintText: "Enter password",
                           prefixIcon: Icon(Icons.lock,
                               color: Color.fromARGB(255, 2, 67, 119))),
                     ),
                   ),
                   const SizedBox(height: 0),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
                     child: TextField(
+                      controller: _repasswordController,
                       obscureText: true,
                       keyboardType: TextInputType.visiblePassword,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           hintText: "Retype password",
                           prefixIcon: Icon(Icons.replay_circle_filled_sharp,
                               color: Color.fromARGB(255, 2, 67, 119))),
@@ -82,7 +93,31 @@ class _SignUpScreen extends State<SignUpScreen> {
                           fillColor: Colors.pink,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)),
-                          onPressed: () {},
+                          onPressed: () {
+                            //
+                            //
+                            //Create new account
+                            if (_passwordController.text ==
+                                _repasswordController.text) {
+                              FirebaseAuth.instance
+                                  .createUserWithEmailAndPassword(
+                                      email: _emailController.text,
+                                      password: _passwordController.text)
+                                  .then((value) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LoginScreen())); //Chuyển về HomeScreen
+                              }).onError((error, stackTrace) {
+                                print("Error ${error.toString()}");
+                              });
+                            } else {
+                              //show pw not equal repw
+                            }
+                          },
+                          //
+                          //
                           child: const Text(
                             "SignUp",
                             style: TextStyle(color: Colors.white, fontSize: 16),

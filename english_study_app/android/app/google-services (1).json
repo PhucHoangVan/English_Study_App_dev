@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "84388049287",
+    "project_id": "englishapp-9fb20",
+    "storage_bucket": "englishapp-9fb20.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84388049287:android:c506af9e685448ab8b6322",
+        "android_client_info": {
+          "package_name": "com.example.english_study_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "84388049287-597m3dk7ffq4irqp2bit69opa43nbotc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxA34BNJBr6YrfN6hCpOsvNpC1BhEJZ_Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "84388049287-597m3dk7ffq4irqp2bit69opa43nbotc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

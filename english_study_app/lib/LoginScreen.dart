@@ -1,15 +1,19 @@
 import 'package:english_study_app/SignUpScreen.dart';
+import 'package:english_study_app/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
-
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool _isObscure = true;
   @override
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
   Widget build(BuildContext context) {
     // ignore: avoid_unnecessary_containers
     return Scaffold(
@@ -40,27 +44,39 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 0),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
                     child: TextField(
+                      controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           hintText: "User Email",
                           prefixIcon: Icon(Icons.mail,
                               color: Color.fromARGB(255, 2, 67, 119))),
                     ),
                   ),
                   const SizedBox(height: 0),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
+
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
                     child: TextField(
-                      obscureText: true,
-                      keyboardType: TextInputType.visiblePassword,
-                      decoration: InputDecoration(
-                          hintText: "Enter password",
-                          prefixIcon: Icon(Icons.lock,
-                              color: Color.fromARGB(255, 2, 67, 119))),
-                    ),
+                        controller: _passwordController,
+                        obscureText: _isObscure,
+                        keyboardType: TextInputType.visiblePassword,
+                        decoration: InputDecoration(
+                            hintText: "Enter password",
+                            prefixIcon: const Icon(Icons.lock,
+                                color: Color.fromARGB(255, 2, 67, 119)),
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _isObscure = !_isObscure;
+                                  });
+                                },
+                                icon: Icon(_isObscure
+                                    ? Icons.visibility_off
+                                    : Icons.visibility),
+                                color: const Color.fromARGB(255, 2, 67, 119)))),
                   ),
                   const SizedBox(height: 10),
                   // ignore: sized_box_for_whitespace
@@ -82,7 +98,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           fillColor: Colors.pink,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)),
-                          onPressed: () {},
+                          onPressed: () {
+                            FirebaseAuth.instance
+                                .signInWithEmailAndPassword(
+                                    email: _emailController.text,
+                                    password: _passwordController.text)
+                                .then((value) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SignUpScreen())); //Chuyển về HomeScreen
+                            }).onError((error, stackTrace) {
+                              print("Error ${error.toString()}");
+                            });
+                          },
                           child: const Text(
                             "Login",
                             style: TextStyle(color: Colors.white, fontSize: 16),
@@ -101,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SignUpScreen()));
+                                  builder: (context) => const SignUpScreen()));
                         },
                         child: const Text("SignUp",
                             style: TextStyle(color: Colors.pink)),
