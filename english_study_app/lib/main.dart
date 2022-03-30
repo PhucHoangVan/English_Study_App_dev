@@ -1,3 +1,5 @@
+import 'package:english_study_app/Game/MatchingGame.dart';
+import 'package:english_study_app/Game/ChooseGame.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import './LoginScreen.dart';
@@ -39,18 +41,19 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder(
-        future: _initializeFirebase(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return const LoginScreen();
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
+    return const Scaffold(
+      // body: FutureBuilder(
+      //   future: _initializeFirebase(),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.done) {
+      //       return const LoginScreen();
+      //     }
+      //     return const Center(
+      //       child: CircularProgressIndicator(),
+      //     );
+      //   },
+      // ),
+      body: ChooseGame(),
     );
   }
 }

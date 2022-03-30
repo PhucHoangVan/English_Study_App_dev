@@ -3,20 +3,7 @@ import 'package:english_words/english_words.dart';
 import 'package:translator/translator.dart';
 import 'dart:ui';
 import 'dart:async';
-void main() => runApp(const MyApp());
 
-class MyApp extends StatelessWidget {
-  const MyApp({ Key? key }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Matching Game",
-      home: MatchGame(),
-      );
-  }
-}
 
 class MatchGame extends StatefulWidget {
   const MatchGame({ Key? key }) : super(key: key);
@@ -43,7 +30,10 @@ class _MatchGameState extends State<MatchGame> {
   Timer? time;
   void startTimer(){
     time=Timer.periodic(Duration(seconds: 1), (timer) { 
-      if(seconds >0){
+      if(!mounted) {
+        return;
+      }
+      if(seconds >0 ){
         setState(() {
           seconds--;
           
@@ -74,7 +64,9 @@ class _MatchGameState extends State<MatchGame> {
     listWordEng.removeAt(0);
     listWordEng.shuffle();
     for(int i=0;i<5;i++){
-      items1.add(ItemModel(name: listWordEng[i], id: i+1));
+      setState(() {
+        items1.add(ItemModel(name: listWordEng[i], id: i+1));
+      });     
       translator.translate(listWordEng[i], to: "vi").then((value) {
         setState(() {
           items2.add(ItemModel(name: value.toString(), id: i+1));
